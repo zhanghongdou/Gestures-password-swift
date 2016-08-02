@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="4Fe-yg-o7L">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="手势密码swift" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1024" y="271"/>
+        </scene>
+        <!--Lock Controller-->
+        <scene sceneID="GpM-Ef-ra0">
+            <objects>
+                <viewController storyboardIdentifier="LockController" id="bVv-yp-CsF" customClass="LockController" customModule="手势密码swift" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nhW-6K-egV"/>
+                        <viewControllerLayoutGuide type="bottom" id="UwL-Gn-jYc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="h6e-wv-35P">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bee-Xp-jJw">
+                                <rect key="frame" x="225" y="275" width="150" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="VUa-2y-wD0"/>
+                                    <constraint firstAttribute="height" constant="50" id="xRV-2q-4DU"/>
+                                </constraints>
+                                <state key="normal" title="设置手势密码"/>
+                                <connections>
+                                    <action selector="setlockWord:" destination="bVv-yp-CsF" eventType="touchUpInside" id="2Oh-Ce-Cfd"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VoL-Di-kGk">
+                                <rect key="frame" x="225" y="345" width="150" height="50"/>
+                                <state key="normal" title="验证密码"/>
+                                <connections>
+                                    <action selector="vertifyPassword:" destination="bVv-yp-CsF" eventType="touchUpInside" id="UaU-Kx-udn"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="VoL-Di-kGk" firstAttribute="height" secondItem="bee-Xp-jJw" secondAttribute="height" id="4un-gR-2wy"/>
+                            <constraint firstItem="bee-Xp-jJw" firstAttribute="centerY" secondItem="h6e-wv-35P" secondAttribute="centerY" id="DOb-2Z-Ymo"/>
+                            <constraint firstItem="bee-Xp-jJw" firstAttribute="centerX" secondItem="h6e-wv-35P" secondAttribute="centerX" id="YIb-Bu-LvO"/>
+                            <constraint firstItem="VoL-Di-kGk" firstAttribute="top" secondItem="bee-Xp-jJw" secondAttribute="bottom" constant="20" id="bmL-Cs-Hw0"/>
+                            <constraint firstItem="VoL-Di-kGk" firstAttribute="centerX" secondItem="bee-Xp-jJw" secondAttribute="centerX" id="e4F-c5-vUp"/>
+                            <constraint firstItem="VoL-Di-kGk" firstAttribute="width" secondItem="bee-Xp-jJw" secondAttribute="width" id="rmL-Jr-g0a"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="DwF-3T-e6v"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vvg-Ix-a9b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="994" y="-73"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="NqO-YP-jpr">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="4Fe-yg-o7L" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HOo-Qk-GGH">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="bVv-yp-CsF" kind="relationship" relationship="rootViewController" id="zra-ZI-0Ae"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Sec-Sx-ytq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-316" y="-61"/>
+        </scene>
+    </scenes>
+</document>
