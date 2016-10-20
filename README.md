@@ -3,21 +3,12 @@
 <html>
 <body>
 <h2>什么是 Gestures-password-Swift</h2>
-<p>这是一个基于swift语言实现的手势解锁封装</p>
+<p>这是一个基于swift3.0语言实现的手势解锁封装</p>
 
 <h2>效果图展示</h2>
 
-<h3>效果图1</h3>
-<p><img src="picture/44867EAD-661E-47FB-BB43-A2B4C5CEC74F.png"/></p>
+<p><img src="picture/gesturePassword.gif"/></p>
 
-<h3>效果图2</h3>
-<p><img src="picture/2DCEED84-0B4C-4991-BE9C-6E3ED1E11E8F.png"/></p>
-
-<h3>效果图3</h3>
-<p><img src="picture/0E0B7B00-18EF-4425-BE67-87FFADA677D0.png"/></p>
-
-<h3>效果图4</h3>
-<p><img src="picture/1AE0C451-5D56-4FD3-BBF0-89E81B293245.png"/></p>
 <h2>使用方法</h2>
 <h3>设置新密码的时候</h3>
 <p>let passwordLock = NSUserDefaults.standardUserDefaults().objectForKey("passwordLock")</br>
