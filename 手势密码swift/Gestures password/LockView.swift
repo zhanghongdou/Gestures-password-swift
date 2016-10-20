@@ -8,7 +8,10 @@
 /// 在这里我不想使用懒加载，因为懒加载虽然节省资源，但是效率太低，所以在资源足够的情况下，我有限考虑不使用懒加载
 
 import UIKit
-
+//闭包传递数组
+typealias SendGestureBtnArray = (_ btnArray : Array<UIButton>) -> Void
+//闭包在设置手势结束之后告诉小窗口清楚
+typealias SmallWindowShouldClear = () -> Void
 protocol LockVIewDeleagate : class {
     func aboutPasswordNotice(_ notice: String) -> Void
 }
@@ -23,21 +26,22 @@ class LockView: UIView {
     var selectButtons : Array<UIButton> = []
     var lineColor : UIColor?
     var currentPoint : CGPoint?
-    let width : CGFloat = 74
-    let height : CGFloat = 74
+    
     let lineCount : CGFloat = 3
     var Aloc = CGPoint()
     var Bloc = CGPoint()
     var markBtn = Int()
     weak var delegate : LockVIewDeleagate?
-    
+    //设置一个变量用来区分是小窗口还是大窗口
+    var isSamllWindow = Bool()
+    var sendGestureBtnArray : SendGestureBtnArray?
+    var smallWindowShouldClear : SmallWindowShouldClear?
     
 
     /**
      创建btn9个
      */
     func creatBtnArray() {
-//        let btnArray = NSMutableArray()
         if self.buttons.count == 0 {
             for index in 0..<9 {
                 let btn = UIButton()
@@ -48,27 +52,33 @@ class LockView: UIView {
                 btn.setBackgroundImage(UIImage(named: "patternround_error.png"), for: .disabled)
                 self.addSubview(btn)
                 self.buttons.append(btn)
-//                btnArray.addObject(btn)
             }
-//            self.buttons.addObjectsFromArray(btnArray as [AnyObject])
-            
         }
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        var width : CGFloat = 0
+        var height : CGFloat = 0
+        if self.isSamllWindow == false {
+            width = 74
+            height = 74
+        }else{
+            width = 20
+            height = 20
+        }
         self.lineColor = UIColor.white
-        let marginX = (self.frame.size.width - self.lineCount * self.width) / (self.lineCount + 1)
-        let marginY = (self.frame.size.height - self.lineCount * self.height) / (self.lineCount + 1)
+        let marginX = (self.frame.size.width - self.lineCount * width) / (self.lineCount + 1)
+        let marginY = (self.frame.size.height - self.lineCount * height) / (self.lineCount + 1)
         self.creatBtnArray()
         var index : CGFloat = 0
         
         for index1 in 0..<self.buttons.count {
             let row = Int(index / self.lineCount)
             let col = index.truncatingRemainder(dividingBy: self.lineCount)
-            let x = marginX + col * (self.width + marginX)
-            let y = marginY + CGFloat(row) * (self.height + marginY)
-            self.buttons[index1].frame = CGRect(x: x, y: y, width: self.width, height: self.height)
+            let x = marginX + col * (width + marginX)
+            let y = marginY + CGFloat(row) * (height + marginY)
+            self.buttons[index1].frame = CGRect(x: x, y: y, width: width, height:height)
             index += 1
         }
         
@@ -88,9 +98,11 @@ class LockView: UIView {
                 self.markBtn = index
                 self.selectButtons.append(btn)
             }
-            
         }
         self.Bloc = self.Aloc
+        if self.sendGestureBtnArray != nil{
+            self.sendGestureBtnArray!(self.selectButtons)
+        }
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touchPoint : UITouch = touches.first!
@@ -130,10 +142,16 @@ class LockView: UIView {
                 self.selectButtons.append(btn)
             }
         }
+        if self.sendGestureBtnArray != nil{
+            self.sendGestureBtnArray!(self.selectButtons)
+        }
         self.Bloc = self.Aloc
         self.setNeedsDisplay()
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if self.smallWindowShouldClear != nil {
+            self.smallWindowShouldClear!()
+        }
         var password = String()
         for btn in self.selectButtons {
             password = password + "\(btn.tag)"
@@ -250,18 +268,37 @@ class LockView: UIView {
             return
         }
         let path = UIBezierPath()
-        path.lineWidth = 5.0
-        for index in 0..<self.selectButtons.count {
-            let btn = self.selectButtons[index]
-            if index == 0 && self.selectButtons.count != 1 {
-                path.move(to: btn.center)
-            }else if self.selectButtons.count == 1 {
-                return
-            }else{
-                path.addLine(to: btn.center)
+        
+        //画线的时候，如果是小窗口的话，通过tag值找到对应的btn画线
+        if self.isSamllWindow == true {
+            path.lineWidth = 2.0
+            for index in 0..<self.selectButtons.count {
+                let btn = self.buttons[self.selectButtons[index].tag]
+                if index == 0 && self.selectButtons.count != 1 {
+                    path.move(to: btn.center)
+                }else if self.selectButtons.count == 1 {
+                    return
+                }else{
+                    path.addLine(to: btn.center)
+                }
+            }
+        }else{
+            path.lineWidth = 5.0
+            for index in 0..<self.selectButtons.count {
+                let btn = self.selectButtons[index]
+                if index == 0 && self.selectButtons.count != 1 {
+                    path.move(to: btn.center)
+                }else if self.selectButtons.count == 1 {
+                    return
+                }else{
+                    path.addLine(to: btn.center)
+                }
             }
         }
-        path.addLine(to: self.currentPoint!)
+        
+        if self.isSamllWindow == false {
+            path.addLine(to: self.currentPoint!)
+        }
         self.lineColor?.set()
         path.stroke()
         

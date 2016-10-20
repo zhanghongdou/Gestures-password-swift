@@ -33,14 +33,21 @@ class LockViewShowManager: NSObject {
         }
     }
     
+    //保存当前用户的账号
+    func saveCurrentUserAccount(userAccount : String) {
+        UserDefaults.standard.set(userAccount, forKey: "LastUserAccount")
+        UserDefaults.standard.synchronize()
+    }
+    
     //获取上一次的用户账号
     func getCurrentUserAccount() -> String {
         let lastUserAccount = UserDefaults.standard.object(forKey: "LastUserAccount")
         return lastUserAccount as! String
     }
     
-    //保存登陆用户的头像，用户名,用户的账号
+    //保存登陆用户的头像，用户名,用户的账号(每一次更换用户登录都要进行保存一次)
     func saveLastUserheaderImageAndName(headerImage : UIImage?, userName : String?, userAccount : String) {
+        self.saveCurrentUserAccount(userAccount: userAccount)
         if headerImage != nil{
             let dataImage : NSData!
             if UIImagePNGRepresentation(headerImage!) == nil {
@@ -53,21 +60,20 @@ class LockViewShowManager: NSObject {
         if userName != nil {
             UserDefaults.standard.set(userName!, forKey: "\(userAccount)+userName")
         }
-        //同时保存用户的账号
-        UserDefaults.standard.set(userAccount, forKey: "LastUserAccount")
         UserDefaults.standard.synchronize()
     }
     //获取上一次登陆用户的头像，用户名
     func getLastUserheaderImageAndName() -> (headerImage : UIImage, userName : String?){
-        let lastUserAccount = self.getCurrentUserAccount
-        
+        let lastUserAccount = self.getCurrentUserAccount()
         let lastUserImage = UserDefaults.standard.object(forKey: "\(lastUserAccount)+userHeaderImage")
         let lastUserName = UserDefaults.standard.object(forKey: "\(lastUserAccount)+userName")
         if [lastUserImage == nil, lastUserName == nil].contains(true) == true {
             if lastUserImage == nil && lastUserName != nil {
                 return (headerImage : UIImage.init(named: "defaultHeaderImage")!, userName : lastUserName as? String)
-            }else{
+            }else if lastUserImage != nil && lastUserName == nil{
                 return (headerImage : (lastUserImage as! UIImage?)!, userName : nil)
+            }else{
+                return (headerImage : UIImage.init(named: "defaultHeaderImage")!, userName : nil)
             }
         }
         return (headerImage : (lastUserImage as! UIImage?)!, userName : lastUserName as! String?)
